@@ -7,7 +7,13 @@
 
 ## Demo编译运行
 ### Windows
+请include在demo/source/include文件下的所有文件，之后将main.cpp加入vs的工程中并选择相应的sdk，配置工程选择Win10sdk，并选择相应的路径指向lib库中的静态库文件。
+
 ### Linux
+直接make（目前编译环境为ArchLinux）
+
 ### OSX
+请include在demo/source/include文件下的所有文件，并在Xcode中添加IOkit, Cocoa, OpenGL以及lib下的OSX中的libIrrilicht.a添加到工程中，
+请选择Xcode 3.2 版本，平台为10.7。
 
 ## 引擎介绍
