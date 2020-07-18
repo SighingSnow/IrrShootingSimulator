@@ -12,7 +12,7 @@ public:
     irr::scene::IAnimatedMeshSceneNode* makeSceneNode();
 
     // make scene nodes, you can create cube/sphere here, mesh is forbidden to use
-    void createSceneNodes();
+    void createSceneNodes(IrrlichtDevice* device);
 
     // drop one scene node/hide one node, after being hit
     void dropSceneNode(int index);

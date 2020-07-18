@@ -33,7 +33,7 @@ int main(void)
 
     // create surrounding
     scene::IAnimatedMeshSceneNode* sceneNode = scene.makeSceneNode();
-    scene.createSceneNodes();
+    scene.createSceneNodes(device);
     receiver.scene = &scene;
 
     // camera
