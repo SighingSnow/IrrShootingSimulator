@@ -1,3 +1,6 @@
+#ifndef EVENT_MANAGER_H
+#define EVENT_MANAGER_H
+
 #include "engine/irrlicht.h"
 #include "sceneManager.h"
 #include "api.h"
@@ -36,3 +39,5 @@ public:
 private:
     bool KeyIsDown[irr::KEY_KEY_CODES_COUNT];
 };
+
+#endif

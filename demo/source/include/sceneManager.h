@@ -1,3 +1,6 @@
+#ifndef SCENE_MANAGER_H
+#define SCENE_MANAGER_H
+
 #include "engine/irrlicht.h"
 #include<iostream>
 
@@ -17,3 +20,5 @@ public:
     // drop one scene node/hide one node, after being hit
     void dropSceneNode(int index);
 };
+
+#endif
