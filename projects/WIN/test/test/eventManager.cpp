@@ -1,5 +1,144 @@
 #include "eventManager.h"
 
+void eventManager::render()
+{
+	IVideoDriver* driver = Game->Device->getVideoDriver();
+	if (!driver) {
+		std::cerr << "error when render" << std::endl;
+	}
+	driver->beginScene();
+	Game->Device->getSceneManager()->drawAll();
+	Game->Device->getGUIEnvironment()->drawAll();
+	driver->endScene();
+}
+
+void eventManager::CreateGUI()
+{
+	IGUIEnvironment *env = device->getGUIEnvironment();
+	irr::video::IVideoDriver * driver = device->getVideoDriver();
+
+	IGUIFont* font = env->getFont("fontlucida.png");
+	if (font)
+		env->getSkin()->setFont(font);
+	env->getSkin()->setColor(EGDC_BUTTON_TEXT, video::SColor(240, 0xAA, 0xAA, 0xAA));
+	env->getSkin()->setColor(EGDC_3D_HIGH_LIGHT, video::SColor(240, 0x22, 0x22, 0x22));
+	env->getSkin()->setColor(EGDC_3D_FACE, video::SColor(240, 0x44, 0x44, 0x44));
+	env->getSkin()->setColor(EGDC_EDITABLE, video::SColor(240, 0x44, 0x44, 0x44));
+	env->getSkin()->setColor(EGDC_FOCUSED_EDITABLE, video::SColor(240, 0x54, 0x54, 0x54));
+	env->getSkin()->setColor(EGDC_WINDOW, video::SColor(240, 0x66, 0x66, 0x66));
+
+	// minimal gui size 800x600
+	dimension2d<u32> dim(800, 600);
+	dimension2d<u32> vdim(device->getVideoDriver()->getScreenSize());
+
+	guix.Window = env->addWindow(rect<s32>(0, 0, dim.Width, dim.Height), false, L"IrrShootingSim");
+	guix.Window->setToolTipText(L"Just have fun here");
+	//guix.Window->getCloseButton()->setToolTipText ( L"Quit Quake3 Explorer" );
+
+	guix.cover = env->addImage(driver->getTexture("media/cover.jpg"), position2d<s32>(0, 0), true, 0);
+
+	guix.singlePlayer = env->addButton(rect<s32>(dim.Width - 500, dim.Height - 400, dim.Width - 200, dim.Height - 300), guix.Window, -1, L"Single Player");
+	guix.singlePlayer->setToolTipText(L"Play immediately with AI");
+
+	guix.multiPlayer = env->addButton(rect<s32>(dim.Width - 500, dim.Height - 200, dim.Width - 200, dim.Height - 100), guix.Window, -1, L"Multi Player");
+	guix.multiPlayer->setToolTipText(L"Play with human when connected");
+
+	env->addStaticText(L"Volumn :", rect<s32>(dim.Width - 300, 64, dim.Width - 200, 80), false, false, guix.Window, -1, false);
+	guix.soundVolumn = env->addScrollBar(true, rect<s32>(dim.Width - 180, 64, dim.Width - 70, 80), guix.Window, -1);
+
+	env->addStaticText(L"Brightness :", rect<s32>(dim.Width - 300, 30, dim.Width - 200, 45), false, false, guix.Window, -1, false);
+	guix.lightVolumn = env->addScrollBar(true, rect<s32>(dim.Width - 180, 30, dim.Width - 70, 45), guix.Window, -1);
+}
+
+void eventManager::CreateRoom()
+{
+	IGUIEnvironment *env = device->getGUIEnvironment();
+	irr::video::IVideoDriver * driver = device->getVideoDriver();
+
+	IGUIFont* font = env->getFont("fontlucida.png");
+	if (font)
+		env->getSkin()->setFont(font);
+	env->getSkin()->setColor(EGDC_BUTTON_TEXT, video::SColor(240, 0xAA, 0xAA, 0xAA));
+	env->getSkin()->setColor(EGDC_3D_HIGH_LIGHT, video::SColor(240, 0x22, 0x22, 0x22));
+	env->getSkin()->setColor(EGDC_3D_FACE, video::SColor(240, 0x44, 0x44, 0x44));
+	env->getSkin()->setColor(EGDC_EDITABLE, video::SColor(240, 0x44, 0x44, 0x44));
+	env->getSkin()->setColor(EGDC_FOCUSED_EDITABLE, video::SColor(240, 0x54, 0x54, 0x54));
+	env->getSkin()->setColor(EGDC_WINDOW, video::SColor(240, 0x66, 0x66, 0x66));
+
+	dimension2d<u32> dim(800, 600);
+	dimension2d<u32> vdim(device->getVideoDriver()->getScreenSize());
+
+	room.Window = env->addWindow(rect<s32>(0, 0, dim.Width, dim.Height), false, L"IrrShootingSim", 0, 1);
+	room.Window->setToolTipText(L"Just have fun here");
+
+	room.Play = env->addButton(rect<s32>(dim.Width - 250, dim.Height - 350, dim.Width - 50, dim.Height - 300), room.Window, 1, L"Play");
+	room.Play->setToolTipText(L"Double Clicked Please");
+
+}
+
+void eventManager::SetGUIActive(s32 command)
+{
+	bool inputState = false;
+
+	ICameraSceneNode * camera = device->getSceneManager()->getActiveCamera();
+
+	switch (command)
+	{
+	case 0: Game->guiActive = 0; inputState = !Game->guiActive; break;
+	case 1: Game->guiActive = 1; inputState = !Game->guiActive;; break;
+	case 2: Game->guiActive ^= 1; inputState = !Game->guiActive; break;
+	case 3:
+		if (camera)
+			inputState = !camera->isInputReceiverEnabled();
+		break;
+	}
+
+	if (camera)
+	{
+		camera->setInputReceiverEnabled(inputState);
+		device->getCursorControl()->setVisible(!inputState);
+	}
+
+	if (guix.Window)
+	{
+		guix.Window->setVisible(Game->guiActive != 0);
+	}
+
+	device->getGUIEnvironment()->setFocus(Game->guiActive ? guix.Window : 0);
+}
+
+void eventManager::SetRoomActive(s32 command)
+{
+	bool inputState = false;
+
+	ICameraSceneNode * camera = device->getSceneManager()->getActiveCamera();
+
+	switch (command)
+	{
+	case 0: Game->roomActive = 0; inputState = !Game->roomActive; break;
+	case 1: Game->roomActive = 1; inputState = !Game->roomActive; break;
+	case 2: Game->roomActive ^= 1; inputState = !Game->roomActive; break;
+	case 3:
+		if (camera)
+			inputState = !camera->isInputReceiverEnabled();
+		break;
+	}
+
+	if (camera)
+	{
+		camera->setInputReceiverEnabled(inputState);
+		//printf("Room: inputState: %d\n",inputState);
+		device->getCursorControl()->setVisible(!inputState);
+	}
+
+	if (room.Window)
+	{
+		room.Window->setVisible(Game->roomActive != 0);
+	}
+
+	device->getGUIEnvironment()->setFocus(Game->roomActive ? room.Window : 0);
+}
+
 void eventManager::initKeyMap(SKeyMap  *keyMap)
 {
 	keyMap[0].Action = EKA_MOVE_FORWARD;
@@ -29,53 +168,75 @@ void eventManager::initKeyMap(SKeyMap  *keyMap)
 }
 
 bool eventManager::OnEvent(const irr::SEvent& event) {
-	if (event.EventType == irr::EET_KEY_INPUT_EVENT) {
-		if (event.KeyInput.Key == KEY_KEY_Z && !KeyIsDown[KEY_KEY_Z])
-			semiauto = !semiauto;
-		if (event.KeyInput.Key == KEY_KEY_C && !KeyIsDown[KEY_KEY_C])
-			spawn = 1;
-		if (event.KeyInput.Key == KEY_KEY_R && !KeyIsDown[KEY_KEY_R] && reload == 0 && ammo != full)
-			reload = reloadTime;
-		if (event.KeyInput.Key == KEY_LSHIFT && !KeyIsDown[KEY_LSHIFT]) {
-			u32 now = (*device)->getTimer()->getTime();
-			if (now >= jumpTimer - 350) {
-				jumpTimer = now + jumpTime;
-				jumpvec = core::vector3df(0, 500, 0);
+	if (event.EventType == EET_GUI_EVENT) {
+		if (Game->guiActive) {
+			if (event.GUIEvent.Caller == guix.singlePlayer && event.GUIEvent.EventType == gui::EGET_BUTTON_CLICKED) {
+				SetGUIActive(0);
+			}
+			if (event.GUIEvent.Caller == guix.multiPlayer && event.GUIEvent.EventType == gui::EGET_BUTTON_CLICKED) {
+				//TODO: open net interface here
+				SetGUIActive(0);
+				CreateRoom();
+				SetRoomActive(1);
 			}
 		}
-		KeyIsDown[event.KeyInput.Key] = event.KeyInput.PressedDown;
-	}
-	else if (event.EventType == irr::EET_MOUSE_INPUT_EVENT) {
-		switch (event.MouseInput.Event)
-		{
-		case EMIE_LMOUSE_PRESSED_DOWN: {
-			if (MouseState.LeftButtonDown == false)
-				canfire = true;
-			MouseState.LeftButtonDown = true;
-		}
-									   break;
-
-		case EMIE_LMOUSE_LEFT_UP:
-			MouseState.LeftButtonDown = false;
-			break;
-
-		case EMIE_RMOUSE_PRESSED_DOWN: {
-			if (!MouseState.RightButtonDown)//on click
-				scope = (scope + 1) % 3;
-			MouseState.RightButtonDown = true;
-		}
-		case EMIE_RMOUSE_LEFT_UP:
-			MouseState.RightButtonDown = false;
-			break;
-		default:
-			break;
+		else if (Game->roomActive) {
+			if (event.GUIEvent.Caller == room.Play && event.GUIEvent.EventType == gui::EGET_BUTTON_CLICKED) {
+				SetRoomActive(0);
+			}
 		}
 	}
+	else
+		if (event.EventType == irr::EET_KEY_INPUT_EVENT && !Game->guiActive) {
+			if (event.KeyInput.Key == KEY_KEY_Z && !KeyIsDown[KEY_KEY_Z])
+				semiauto = !semiauto;
+			if (event.KeyInput.Key == KEY_KEY_C && !KeyIsDown[KEY_KEY_C])
+				spawn = 1;
+			if (event.KeyInput.Key == KEY_KEY_R && !KeyIsDown[KEY_KEY_R] && reload == 0 && ammo != full)
+				reload = reloadTime;
+			if (event.KeyInput.Key == KEY_LSHIFT && !KeyIsDown[KEY_LSHIFT]) {
+				u32 now = device->getTimer()->getTime();
+				if (now >= jumpTimer - 350) {
+					jumpTimer = now + jumpTime;
+					jumpvec = core::vector3df(0, 500, 0);
+				}
+			}
+			KeyIsDown[event.KeyInput.Key] = event.KeyInput.PressedDown;
+		}
+		else
+			if (event.EventType == irr::EET_MOUSE_INPUT_EVENT && !Game->guiActive) {
+				switch (event.MouseInput.Event)
+				{
+				case EMIE_LMOUSE_PRESSED_DOWN: {
+					if (MouseState.LeftButtonDown == false)
+						canfire = true;
+					MouseState.LeftButtonDown = true;
+				}
+											   break;
+				case EMIE_LMOUSE_LEFT_UP:
+					MouseState.LeftButtonDown = false;
+					break;
+				case EMIE_RMOUSE_PRESSED_DOWN: {
+					if (!MouseState.RightButtonDown)//on click
+						scope = (scope + 1) % 3;
+					MouseState.RightButtonDown = true;
+				}
+				case EMIE_RMOUSE_LEFT_UP:
+					MouseState.RightButtonDown = false;
+					break;
+				default:
+					break;
+				}
+			}
+			else
+				if (event.EventType == EET_KEY_INPUT_EVENT && event.KeyInput.Key == KEY_ESCAPE && Game->guiActive) {
+					SetGUIActive(3);
+				}
 	return false;
 }
 
 bool eventManager::allowfire() {
-	s32 nowTimer = (*device)->getTimer()->getTime();
+	s32 nowTimer = device->getTimer()->getTime();
 	s32 fireRate = 125;
 	if (reload)return false;
 	if (!ammo) {
@@ -108,7 +269,7 @@ bool eventManager::allowfire() {
 
 int eventManager::collideObject() {
 	core::line3d<f32> ray;
-	scene::ISceneManager* smgr = (*device)->getSceneManager();
+	scene::ISceneManager* smgr = device->getSceneManager();
 	scene::ICameraSceneNode* camera = smgr->getActiveCamera();
 	ray.start = camera->getPosition();
 	ray.end = ray.start + (camera->getTarget() - ray.start).normalize() * 10000.0f;
@@ -139,7 +300,9 @@ int eventManager::collideObject() {
 		//pow anim
 		WeaponNode->setMD2Animation("pow");
 		//sound
+#ifdef _MSC_VER
 		PlaySound(TEXT("media/ak.wav"), NULL, SND_FILENAME | SND_ASYNC);
+#endif
 		//fireline//////////////
 		scene::ISceneNode* fireline = 0;
 		scene::ISceneNodeAnimator* anim = 0;
@@ -181,8 +344,8 @@ int eventManager::collideObject() {
 		core::vector3df camrotate = camera->getRotation();
 		upvec = core::vector3df((camrotate.X - 2.0f > 272.1f || camrotate.X < 271.9f) ? -2.0f : 0, 1.0f*randy, 0);
 		upvec *= 2;
-		reTimer = (*device)->getTimer()->getTime() + reTime;
-		upTimer = (*device)->getTimer()->getTime() + upTime;
+		reTimer = device->getTimer()->getTime() + reTime;
+		upTimer = device->getTimer()->getTime() + upTime;
 		////////////////////////
 		if (selectedSceneNode) {
 			//on shot

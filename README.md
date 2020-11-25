@@ -16,4 +16,13 @@
 请include在demo/source/include文件下的所有文件，并在Xcode中添加IOkit, Cocoa, OpenGL以及lib下的OSX中的libIrrilicht.a添加到工程中，
 请选择Xcode 3.2 版本，平台为10.7。
 
-## 引擎介绍
+## 游戏简介
+
+游戏与CS等FPS游戏有高度相似性，可以在macos和windows系统上进行游戏。
+
+以下为游戏截图
+
+![image-20201125194754572](/Users/songtingyu/Library/Application Support/typora-user-images/image-20201125194754572.png)
+
+![image-20201125194923396](/Users/songtingyu/Library/Application Support/typora-user-images/image-20201125194923396.png)
+

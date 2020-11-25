@@ -3,19 +3,18 @@
 #define EVENT_MANAGER_H
 
 
-#include "engine/irrlicht.h"
-//#include "sceneManager.h"
-#include "api.h"
+#include "common.h"
 #include "engine/ICameraSceneNode.h"
 #include<cmath>
+#include<queue>
 
-/// <sound>
-
+/* sound */
+#ifdef _MSC_VER
 #include<windows.h>
 #include<Mmsystem.h>
 #pragma comment(lib,"winmm.lib")
-using namespace std;
-/// </sound>
+#endif
+/* sound> */
 
 extern scene::IAnimatedMesh* bhmesh;
 extern scene::ITriangleSelector* selector;
@@ -31,17 +30,101 @@ extern scene::IAnimatedMeshSceneNode* WeaponNode;
 extern bool spawn;
 extern int reload, reloadTime;
 
-using namespace irr;
-class eventManager : public irr::IEventReceiver
+#define dropElement(x)    if (x) { x->remove(); x = 0; }
+
+class attacher {
+private:
+	std::queue< scene::IMeshSceneNode* > bullets;
+	void popu() {
+		scene::IMeshSceneNode* oldbullet;
+		oldbullet = bullets.front();
+		scene::ISceneNodeAnimator* anim = smg->createDeleteAnimator(0);
+		oldbullet->addAnimator(anim);
+		anim->drop();
+		bullets.pop();
+	}
+public:
+	scene::ISceneManager* smg;
+	attacher() {
+	}
+	attacher(scene::ISceneManager* smgr) {
+		smg = smgr;
+	}
+	void add(scene::IMeshSceneNode* newbullet) {
+		if (bullets.size() >= 10)
+			popu();
+		bullets.push(newbullet);
+	}
+	void clear() {
+		int size = bullets.size();
+		for (int i = 0; i < size; i++)
+			popu();
+	}
+
+};
+
+class GUIX {
+public:
+	GUIX() {
+		memset(this, 0, sizeof(this));
+	}
+
+	void drop()
+	{
+		dropElement(Window);
+		dropElement(Logo);
+	}
+
+
+	IGUIImage* Logo;
+	IGUIWindow* Window;
+
+	IGUIButton* singlePlayer;
+	IGUIButton* multiPlayer;
+
+	IGUIImage* cover;
+	IGUIScrollBar* soundVolumn;
+	IGUIScrollBar* lightVolumn;
+};
+
+class Room {
+public:
+	Room() {
+		memset(this, 0, sizeof(this));
+	}
+
+	void drop() {
+		dropElement(Window);
+	}
+
+	IGUIWindow* Window;
+	IGUIButton* Play;
+	IGUIButton* EnterRoom;
+};
+
+
+class eventManager : public IEventReceiver
 {
 public:
-	IrrlichtDevice** device;
+	IrrlichtDevice* device;
+	GUIX guix;
+	Room room;
+	GameData* Game;
 
 	struct SMouseState {
 		irr::core::position2di Position;
 		bool LeftButtonDown, RightButtonDown;
 		SMouseState() :LeftButtonDown(false), RightButtonDown(false) {}
 	}MouseState;
+
+	eventManager() {
+		for (u32 i = 0; i < KEY_KEY_CODES_COUNT; i++)
+			KeyIsDown[i] = false;
+		canfire = true;
+		semiauto = true;
+		//device = 0;
+		Game = new GameData();
+	}
 
 	virtual bool OnEvent(const irr::SEvent& event);
 
@@ -60,26 +143,17 @@ public:
 	bool allowfire();
 	void initKeyMap(SKeyMap * keyMap);
 	// Construct
-	eventManager() {
-		for (u32 i = 0; i < KEY_KEY_CODES_COUNT; i++)
-			KeyIsDown[i] = false;
-		canfire = true;
-		semiauto = true;
-		//device = 0;
-	}
+	void CreateGUI();
+	void CreateRoom();
+	void SetGUIActive(s32 command);
+	void SetRoomActive(s32 command);
+	void render();
 
 private:
 	bool KeyIsDown[irr::KEY_KEY_CODES_COUNT];
 	bool canfire, semiauto;
 	s32 fireTimer;
 
-	core::vector3df getvector(core::triangle3df tri) {
-		core::vector3df N = tri.getNormal();
-		N.normalize();
-		f32 theta, phie;
-		theta = atan2(N.Y, N.X);
-		phie = atan2(N.Z, sqrt(N.Y*N.Y + N.X*N.X));
-	}
 };
 
 

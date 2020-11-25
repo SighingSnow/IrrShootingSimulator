@@ -128,12 +128,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="api.h" />
+    <ClInclude Include="common.h" />
     <ClInclude Include="eventManager.h" />
-    <ClInclude Include="sceneManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="api.cpp" />
+    <ClCompile Include="common.cpp" />
     <ClCompile Include="eventManager.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

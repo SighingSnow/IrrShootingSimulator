@@ -1,56 +1,62 @@
-﻿  main.cpp
+﻿  common.cpp
 \\vmware-host\shared folders\桌面\test\test\engine\keycodes.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-\\vmware-host\shared folders\桌面\test\test\main.cpp(193): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
-\\vmware-host\shared folders\桌面\test\test\main.cpp(137): warning C4101: “animation”: 未引用的局部变量
-\\vmware-host\shared folders\桌面\test\test\main.cpp(318): warning C4244: “参数”: 从“int”转换到“T”，可能丢失数据
+  eventManager.cpp
+\\vmware-host\shared folders\桌面\test\test\engine\keycodes.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+\\vmware-host\shared folders\桌面\test\test\eventmanager.h(59): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+  main.cpp
+\\vmware-host\shared folders\桌面\test\test\engine\keycodes.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+\\vmware-host\shared folders\桌面\test\test\eventmanager.h(59): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+\\vmware-host\shared folders\桌面\test\test\main.cpp(122): warning C4101: “animation”: 未引用的局部变量
+\\vmware-host\shared folders\桌面\test\test\main.cpp(276): warning C4244: “参数”: 从“int”转换到“T”，可能丢失数据
           with
           [
               T=irr::f32
           ]
-\\vmware-host\shared folders\桌面\test\test\main.cpp(321): warning C4244: “参数”: 从“int”转换到“T”，可能丢失数据
+\\vmware-host\shared folders\桌面\test\test\main.cpp(279): warning C4244: “参数”: 从“int”转换到“T”，可能丢失数据
           with
           [
               T=irr::f32
           ]
-\\vmware-host\shared folders\桌面\test\test\main.cpp(332): warning C4244: “=”: 从“irr::f32”转换到“irr::s32”，可能丢失数据
-\\vmware-host\shared folders\桌面\test\test\main.cpp(334): warning C4244: “参数”: 从“irr::f32”转换到“T”，可能丢失数据
+\\vmware-host\shared folders\桌面\test\test\main.cpp(290): warning C4244: “=”: 从“irr::f32”转换到“irr::s32”，可能丢失数据
+\\vmware-host\shared folders\桌面\test\test\main.cpp(292): warning C4244: “参数”: 从“irr::f32”转换到“T”，可能丢失数据
           with
           [
               T=irr::s32
           ]
-\\vmware-host\shared folders\桌面\test\test\main.cpp(335): warning C4244: “参数”: 从“irr::f32”转换到“T”，可能丢失数据
+\\vmware-host\shared folders\桌面\test\test\main.cpp(293): warning C4244: “参数”: 从“irr::f32”转换到“T”，可能丢失数据
           with
           [
               T=irr::s32
           ]
-\\vmware-host\shared folders\桌面\test\test\main.cpp(337): warning C4244: “参数”: 从“irr::f32”转换到“T”，可能丢失数据
+\\vmware-host\shared folders\桌面\test\test\main.cpp(295): warning C4244: “参数”: 从“irr::f32”转换到“T”，可能丢失数据
           with
           [
               T=irr::s32
           ]
-\\vmware-host\shared folders\桌面\test\test\main.cpp(338): warning C4244: “参数”: 从“irr::f32”转换到“T”，可能丢失数据
+\\vmware-host\shared folders\桌面\test\test\main.cpp(296): warning C4244: “参数”: 从“irr::f32”转换到“T”，可能丢失数据
           with
           [
               T=irr::s32
           ]
-\\vmware-host\shared folders\桌面\test\test\main.cpp(340): warning C4244: “参数”: 从“irr::f32”转换到“T”，可能丢失数据
+\\vmware-host\shared folders\桌面\test\test\main.cpp(298): warning C4244: “参数”: 从“irr::f32”转换到“T”，可能丢失数据
           with
           [
               T=irr::s32
           ]
-\\vmware-host\shared folders\桌面\test\test\main.cpp(341): warning C4244: “参数”: 从“irr::f32”转换到“T”，可能丢失数据
+\\vmware-host\shared folders\桌面\test\test\main.cpp(299): warning C4244: “参数”: 从“irr::f32”转换到“T”，可能丢失数据
           with
           [
               T=irr::s32
           ]
-\\vmware-host\shared folders\桌面\test\test\main.cpp(343): warning C4244: “参数”: 从“irr::f32”转换到“T”，可能丢失数据
+\\vmware-host\shared folders\桌面\test\test\main.cpp(301): warning C4244: “参数”: 从“irr::f32”转换到“T”，可能丢失数据
           with
           [
               T=irr::s32
           ]
-\\vmware-host\shared folders\桌面\test\test\main.cpp(344): warning C4244: “参数”: 从“irr::f32”转换到“T”，可能丢失数据
+\\vmware-host\shared folders\桌面\test\test\main.cpp(302): warning C4244: “参数”: 从“irr::f32”转换到“T”，可能丢失数据
           with
           [
               T=irr::s32
           ]
+  正在生成代码...
   test.vcxproj -> \\vmware-host\Shared Folders\桌面\test\x64\Debug\test.exe

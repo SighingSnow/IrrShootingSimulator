@@ -30,7 +30,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\86136\\Desktop\\ZYD\\docs\\SRTP\\wall.jpg
+map_Kd wall.jpg
 
 newmtl 材质.005
 Ns 225.000000
@@ -41,7 +41,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\86136\\Desktop\\ZYD\\docs\\SRTP\\wall.jpg
+map_Kd wall.jpg
 
 newmtl 材质.007
 Ns 225.000000
@@ -52,7 +52,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\86136\\Desktop\\ZYD\\docs\\SRTP\\wall.jpg
+map_Kd wall.jpg
 
 newmtl 材质.008
 Ns 225.000000
@@ -63,7 +63,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\86136\\Desktop\\ZYD\\docs\\SRTP\\floor.jpg
+map_Kd floor.jpg
 
 newmtl 材质.009
 Ns 225.000000
@@ -74,7 +74,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\86136\\Desktop\\ZYD\\docs\\SRTP\\floor2.jpg
+map_Kd floor2.jpg
 
 newmtl 材质.011
 Ns 220.117691
@@ -85,7 +85,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\86136\\Desktop\\ZYD\\docs\\SRTP\\wall.jpg
+map_Kd wall.jpg
 
 newmtl 材质.012
 Ns 225.000000
@@ -96,4 +96,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:\\Users\\86136\\Desktop\\ZYD\\docs\\SRTP\\sky.jpg
+map_Kd sky.jpg

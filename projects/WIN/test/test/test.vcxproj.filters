@@ -18,10 +18,7 @@
     <ClInclude Include="eventManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="api.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="sceneManager.h">
+    <ClInclude Include="common.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -32,7 +29,7 @@
     <ClCompile Include="eventManager.cpp">
       <Filter>头文件</Filter>
     </ClCompile>
-    <ClCompile Include="api.cpp">
+    <ClCompile Include="common.cpp">
       <Filter>头文件</Filter>
     </ClCompile>
   </ItemGroup>

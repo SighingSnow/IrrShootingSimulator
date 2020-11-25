@@ -1,109 +1,163 @@
+#pragma once
 #ifndef EVENT_MANAGER_H
 #define EVENT_MANAGER_H
 
 
-#include "../include/irrlicht.h"
-#include "sceneManager.h"
-#include "api.h"
-#include "../include/ICameraSceneNode.h"
-using namespace irr;
-class eventManager : public irr::IEventReceiver
-{
+#include "common.h"
+#include "include/ICameraSceneNode.h"
+#include<cmath>
+#include<queue>
+
+/* sound */
+#ifdef _WINDOWS_
+#include<windows.h>
+#include<Mmsystem.h>
+#pragma comment(lib,"winmm.lib")
+#endif
+/* sound> */
+
+extern scene::IAnimatedMesh* bhmesh;
+extern scene::ITriangleSelector* selector;
+extern f32 reTimer, upTimer, jumpTimer;
+extern const f32 reTime, upTime, jumpTime;
+extern core::vector3df upvec, jumpvec;
+extern int scope;
+extern int ammo, full;
+extern f32 frameDeltaTime;
+extern video::ITexture* bulletImg;
+extern scene::IMeshSceneNode* lastbullet;
+extern scene::IAnimatedMeshSceneNode* WeaponNode;
+extern bool spawn;
+extern int reload, reloadTime;
+
+#define dropElement(x)    if (x) { x->remove(); x = 0; }
+
+class attacher {
+private:
+    std::queue< scene::IMeshSceneNode* > bullets;
+    void popu() {
+        scene::IMeshSceneNode* oldbullet;
+        oldbullet = bullets.front();
+        scene::ISceneNodeAnimator* anim = smg->createDeleteAnimator(0);
+        oldbullet->addAnimator(anim);
+        anim->drop();
+        bullets.pop();
+    }
 public:
-    IrrlichtDevice** device;
-
-    struct SMouseState {
-        irr::core::position2di Position;
-        bool LeftButtonDown;
-        SMouseState() :LeftButtonDown(false) {}
-    }MouseState;
-
-    virtual bool OnEvent(const irr::SEvent& event) {
-        if (event.EventType == irr::EET_KEY_INPUT_EVENT) {
-            KeyIsDown[event.KeyInput.Key] = event.KeyInput.PressedDown;
-            /*
-            if (event.KeyInput.Key == irr::KEY_KEY_W) {
-                KeyIsDown[irr::KEY_UP] = event.KeyInput.PressedDown;
-            }
-            if (event.KeyInput.Key == irr::KEY_KEY_A) {
-                KeyIsDown[irr::KEY_LEFT] = event.KeyInput.PressedDown;
-            }
-            if (event.KeyInput.Key == irr::KEY_KEY_S) {
-                KeyIsDown[irr::KEY_DOWN] = event.KeyInput.PressedDown;
-            }
-            if (event.KeyInput.Key == irr::KEY_KEY_D) {
-                KeyIsDown[irr::KEY_RIGHT] = event.KeyInput.PressedDown;
-            }
-            */
-        }
-        else if (event.EventType == irr::EET_MOUSE_INPUT_EVENT) {
-            switch (event.MouseInput.Event)
-            {
-            case EMIE_LMOUSE_PRESSED_DOWN: {
-                if (MouseState.LeftButtonDown == false)
-                    canfire = true;
-                MouseState.LeftButtonDown = true;
-            }
-                break;
-
-            case EMIE_LMOUSE_LEFT_UP:
-                MouseState.LeftButtonDown = false;
-                break;
-
-            default:
-                break;
-            }
-        }
-        return false;
+    scene::ISceneManager* smg;
+    attacher() {
+    }
+    attacher(scene::ISceneManager* smgr) {
+        smg = smgr;
+    }
+    void add(scene::IMeshSceneNode* newbullet) {
+        if (bullets.size() >= 10)
+            popu();
+        bullets.push(newbullet);
+    }
+    void clear() {
+        int size = bullets.size();
+        for (int i = 0; i < size; i++)
+            popu();
     }
 
+};
+
+class GUIX{
+public:
+    GUIX(){
+        memset(this, 0 ,sizeof(this));
+    }
+
+    void drop()
+    {
+        dropElement ( Window );
+        dropElement ( logo );
+        dropElement ( cover );
+    }
+    
+    IGUIWindow* Window;
+    
+    IGUIButton* singlePlayer;
+    IGUIButton* multiPlayer;
+    
+    IGUIImage* logo;
+    IGUIImage* cover;
+    
+    /* Please notice that the below botton are for decorated*/
+    IGUIScrollBar* soundVolumn;
+    IGUIScrollBar* lightVolumn;
+};
+
+class Room{
+public:
+    Room(){
+        memset(this,0,sizeof(this));
+    }
+    
+    void drop(){
+        dropElement(Window);
+    }
+    
+    IGUIWindow* Window;
+    IGUIButton* Play;
+    IGUIButton* EnterRoom;
+};
+
+
+class eventManager : public IEventReceiver
+{
+public:
+    IrrlichtDevice* device;
+    GUIX guix;
+    Room room;
+    GameData* Game;
+    
+    struct SMouseState {
+        irr::core::position2di Position;
+        bool LeftButtonDown, RightButtonDown;
+        SMouseState() :LeftButtonDown(false), RightButtonDown(false) {}
+    }MouseState;
+
+    eventManager() {
+        for (u32 i = 0; i < KEY_KEY_CODES_COUNT; i++)
+            KeyIsDown[i] = false;
+        canfire = true;
+        semiauto = true;
+        //device = 0;
+        Game = new GameData();
+    }
+    
+    virtual bool OnEvent(const irr::SEvent& event);
+
     // Keyboard
-    virtual bool IsKeyDown(irr::EKEY_CODE keyCode) const{
+    virtual bool IsKeyDown(irr::EKEY_CODE keyCode) const {
         return KeyIsDown[keyCode];
     }
 
     // Mouse
-    const SMouseState & GetMouseState(void) const{
+    const SMouseState & GetMouseState(void) const {
         return MouseState;
     }
 
     // return the hitted object's index by sceneManager, return -1 if no objects are hit,
     int collideObject();
-
+    bool allowfire();
+    void initKeyMap(SKeyMap * keyMap);
     // Construct
-    eventManager(){
-        for (u32 i = 0; i < KEY_KEY_CODES_COUNT; i++)
-            KeyIsDown[i] = false;
-        canfire = true;
-        //device = 0;
-    }
-
+    void CreateGUI();
+    void CreateRoom();
+    void SetGUIActive(s32 command);
+    void SetRoomActive(s32 command);
+    void render();
+    
+    
 private:
     bool KeyIsDown[irr::KEY_KEY_CODES_COUNT];
-    bool canfire;
+    bool canfire, semiauto;
+    s32 fireTimer;
+    
 };
-int eventManager::collideObject() {
-    core::line3d<f32> ray;
-    scene::ISceneManager* smgr = (*device)->getSceneManager();
-    scene::ICameraSceneNode* camera = smgr->getActiveCamera();
-    ray.start = camera->getPosition();
-    ray.end = ray.start + (camera->getTarget() - ray.start).normalize() * 10000.0f;
-    core::triangle3df hitTriangle;
-    core::vector3df intersection;
-    scene::ISceneCollisionManager* collMan = (smgr)->getSceneCollisionManager();
-    scene::ISceneNode* selectedSceneNode =
-        collMan->getSceneNodeAndCollisionPointFromRay(
-            ray,
-            intersection,
-            hitTriangle,
-            0,
-            0);
-    if (MouseState.LeftButtonDown && canfire) {
-        canfire = false;
-        if(selectedSceneNode)
-            return selectedSceneNode->getID();
-    }
-    return -1;
-}
-#endif
 
+
+#endif
