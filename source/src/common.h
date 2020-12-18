@@ -50,6 +50,7 @@ public:
     irr::s32 roomInputActive;
     irr::s32 netEnable;
     
+    int playersNum;
     
     void setDefault();
     

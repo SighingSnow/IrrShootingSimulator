@@ -7,6 +7,25 @@
 
 #include "netManager.h"
 
+void NetManager::createPlayer(int index)
+{
+    if(index < playersNode.size() && index != 0){
+        std::cerr<<" no need to create new player"<<std::endl;
+        return;
+    }
+    playersNode.resize(playerInfo.index+1);
+    ISceneManager* smgr = device->getSceneManager();
+    scene::IAnimatedMesh* tmpmesh;
+    tmpmesh = smgr->getMesh("sydney.md2");
+    // TODO: Add more specific index, it's important to check collision
+    playersNode[index] = smgr->addMeshSceneNode(tmpmesh);
+    playersNode[index]->setScale(core::vector3df(1.5f));
+    playersNode[index]->setPosition(core::vector3df(playersInfo[index].x, playersInfo[index].y, playersInfo[index].z));
+    playersNode[index]->setMaterialFlag(video::EMF_LIGHTING, true);
+    return;
+}
+
+
 void Server::initNet()
 {
     peer = SLNet::RakPeerInterface::GetInstance();
@@ -21,17 +40,18 @@ void Server::initNet()
     SLNet::SocketDescriptor sd(SERVER_PORT,0);
     
     int start_up = peer->Startup(MAX_CLIENT, &sd, 1);
-    std::cout<<start_up<<std::endl;
     if (start_up > 0)
     {
         std::cerr << "Startup failed" << std::endl;
         return;
     }
     
+    if(start_up == 0){
+        std::cout<< "Start up succeed"<<std::endl;
+    }
+    
     //SetMaximumIncomingConnections容许最多的连接数量
     peer->SetMaximumIncomingConnections(MAX_CLIENT);
-    
-    serverInfo.blood = 10;
     
     return;
 }
@@ -47,12 +67,14 @@ void Server::updateNet()
                 break;
             case ID_REMOTE_CONNECTION_LOST:
                 printf("Another client has lost the connection.\n");
+                crtClients--;
                 break;
             case ID_REMOTE_NEW_INCOMING_CONNECTION:
                 printf("Another client has connected.\n");
                 break;
             case ID_CONNECTION_REQUEST_ACCEPTED:
-                printf("Our connection request has been accepted.\n");
+                printf("New connection request from a client has been accepted.\n");
+                sendData();
                 break;
             case ID_NEW_INCOMING_CONNECTION:
                 printf("A connection is incoming.\n");
@@ -96,9 +118,13 @@ void Server::sendData()
     SLNet::BitStream stream;
     stream.Write(( SLNet::MessageID )ID_USER_PACKET_ENUM);
     stream.Write(sendServerInfo);
-    stream.Write(serverInfo.blood);
-    stream.WriteVector(serverInfo.x, serverInfo.y, serverInfo.z);
-    std::cout<<packet->systemAddress.ToString()<<std::endl;
+    stream.Write(crtClients); // 传递目前共有所有clients包括server自己的个数
+    for(int i = 0;i < crtClients;i++){
+        // playerInfo is updating while the device running
+        stream.Write(playersInfo[i].blood);
+        stream.WriteVector(playersInfo[i].x,playersInfo[i].y,playersInfo[i].z);
+    }
+    //std::cout<<packet->systemAddress.ToString()<<std::endl;
     peer->Send(&stream, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
     return;
 }
@@ -106,10 +132,26 @@ void Server::sendData()
 void Server::receiveData(SLNet::BitStream &bs_in)
 {
     PlayerInfo client_tmp;
+    int tmp_crtClients;
     // no need to read message id again, because Read auto move offset
+    bs_in.Read(tmp_crtClients);
+    bs_in.Read(client_tmp.index);
     bs_in.Read(client_tmp.blood);
     bs_in.ReadVector(client_tmp.x, client_tmp.y, client_tmp.z);
-    clientsInfo.push_back(client_tmp);
+    if(client_tmp.index == crtClients){
+        crtClients++;
+        playersInfo.push_back(client_tmp);
+        // add iplayer to scene node
+        createPlayer(client_tmp.index);
+    }
+    else{
+        // manipulate the location
+        if(playersNode.size() > client_tmp.index){
+            playersNode[client_tmp.index]->setPosition(core::vector3df(client_tmp.x, client_tmp.y, client_tmp.z));
+        }
+        else
+            std::cerr<<"Accessing IMeshSceneNode not exist"<<std::endl;
+    }
     sendData();
     return;
 }
@@ -176,7 +218,6 @@ void Client::updateNet()
                 {
                     std::cout << "Our connection request has been accepted for server" << std::endl;
                     server_address = packet->systemAddress;
-                    sendData();
                     break;
                 }
             case ID_NEW_INCOMING_CONNECTION:
@@ -203,19 +244,45 @@ void Client::updateNet()
 
 void Client::sendData()
 {
+    
     SLNet::BitStream stream;
     stream.Write((SLNet::MessageID)ID_USER_PACKET_ENUM);
     stream.Write(sendClientInfo);
-    stream.Write(clientInfo.blood);
-    stream.WriteVector(clientInfo.x, clientInfo.y, clientInfo.z);
+    stream.Write(crtClients);
+    stream.Write(playerInfo.index); // 返回自己的index数值
+    stream.Write(playerInfo.blood);
+    stream.WriteVector(playerInfo.x, playerInfo.y, playerInfo.z);
     peer->Send(&stream, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
     return ;
 }
 
 void Client::receiveData(SLNet::BitStream &bs_in)
 {
-    bs_in.Read(serverInfo.blood);
-    bs_in.ReadVector(serverInfo.x,serverInfo.y, serverInfo.z);
+    // no need to read message id again, because Read auto move offset
+    bs_in.Read(crtClients);// 读出目前活跃玩家数量
+    int tmp_size = playersInfo.size();
+    // 将从server那里得到的信息进行更新, 如原来的vector为0或者有新的就push
+    if(playersInfo.size() < crtClients){
+        playersInfo.resize(crtClients+1);
+        playersInfo[crtClients].index = crtClients;
+        playerInfo.index = playersInfo[crtClients].index;
+        playersInfo[crtClients].x = playerInfo.x;
+        playersInfo[crtClients].y = playerInfo.y;
+        playersInfo[crtClients].z = playerInfo.z;
+        crtClients++;
+    }
+    
+    for(int i = 0;i < crtClients;i++){
+        bs_in.Read(playersInfo[i].blood);
+        bs_in.ReadVector(playersInfo[i].x, playersInfo[i].y,playersInfo[i].z);
+        if(i>=tmp_size && i != playerInfo.index){
+            createPlayer(i); // create new scene node
+        }
+        else if(i != playerInfo.index){
+            playersNode[i]->setPosition(core::vector3df(playersInfo[i].x, playersInfo[i].y,playersInfo[i].z));
+        }
+    }
+    sendData();
     return;
 }
 

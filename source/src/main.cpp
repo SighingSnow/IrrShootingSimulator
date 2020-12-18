@@ -209,50 +209,49 @@ int main(void)
             //tgtatcr.clear();
         }
         
-//        if (spawn)
-//        {
-//            for (int i = 0; i < 10; i++) {
-//                if (tgtnode[i] != 0) {
-//                    selectors->removeTriangleSelector(tgtnode[i]->getTriangleSelector());
-//                    dropElement(tgtnode[i]);
-//                }
-//            }
-//            createtgt(smgr, driver, selectors);
-//            spawn = 0;
-//        }
+        if (spawn)
+        {
+            for (int i = 0; i < 10; i++) {
+                if (tgtnode[i] != 0) {
+                    selectors->removeTriangleSelector(tgtnode[i]->getTriangleSelector());
+                    dropElement(tgtnode[i]);
+                }
+            }
+            //createtgt(smgr, driver, selectors,eventer.netMgr->clientsInfo);
+            spawn = 0;
+        }
 
         if(eventer.netMgr != nullptr){
             /* send our data */
+            eventer.netMgr->device = device;
             eventer.netMgr->playerInfo.x = camera->getPosition().X;
             eventer.netMgr->playerInfo.y = camera->getPosition().Y;
             eventer.netMgr->playerInfo.z = camera->getPosition().Z;
             if(eventer.netMgr->isServer){
-                eventer.netMgr->serverInfo = eventer.netMgr->playerInfo;
-            }
-            else{
-                eventer.netMgr->clientInfo = eventer.netMgr->playerInfo;
+                eventer.netMgr->playerInfo.index = server_index;
+                eventer.netMgr->playersInfo.push_back(eventer.netMgr->playerInfo);
             }
             //printf("%f %f %f\n",camera->getPosition().X,camera->getPosition().Y,camera->getPosition().Z);
             eventer.netMgr->updateNet();
-
-            /* draw the collected data */
-            if(eventer.netMgr->clientsInfo.size() > 0){
-                createtgt(smgr, driver, selectors, eventer.netMgr->clientsInfo);
-            }
         }
         
         
         driver->beginScene();
-        smgr->drawAll();
-        if(eventer.Game->guiActive || eventer.Game->roomActive) device->getGUIEnvironment()->drawAll();
-        camera->setFOV(defaultFOV / (f32)pow(2, scope));
-        //sniper cover
-        if (scope) {
-            driver->draw2DImage(scopeImg, core::rect<s32>(0, 0, windowHeight, windowWidth),
-                core::rect<s32>(0, 0, windowHeight, windowWidth), 0, 0, true);
+        if(eventer.Game->guiActive || eventer.Game->roomActive)
+            device->getGUIEnvironment()->drawAll();
+        else{
+            smgr->drawAll();
+            
+            camera->setFOV(defaultFOV / (f32)pow(2, scope));
+            //sniper coverss
+            if (scope) {
+                driver->draw2DImage(scopeImg, core::rect<s32>(0, 0, windowHeight, windowWidth),
+                    core::rect<s32>(0, 0, windowHeight, windowWidth), 0, 0, true);
+            }
+            else DrawCur(device, driver);
         }
-        else DrawCur(device, driver);
         driver->endScene();
+       
         
         int fps = driver->getFPS();
         if (lastFPS != fps)
@@ -309,3 +308,4 @@ void DrawCur(IrrlichtDevice* device, video::IVideoDriver* driver) {
     /*C*/if (!deltaTime)
         driver->draw2DPolygon(core::vector2di(windowHeight / 2, windowWidth / 2), 1, video::SColor(255, 0, 255, 0), 8);
 }
+

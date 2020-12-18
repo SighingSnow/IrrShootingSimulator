@@ -15,6 +15,11 @@
 #include "net/MessageIdentifiers.h"
 #include "net/BitStream.h"
 #include "net/RakNetTypes.h"  // MessageID
+#include "include/irrlicht.h"
+
+const int undefined_index = 100000;
+const int dead_index = -1;
+const int server_index = 0;
 
 enum message_type
 {
@@ -25,19 +30,26 @@ enum message_type
 #pragma pack(push,1)
 struct PlayerInfo
 {
+    int index; /* used for locating the cash */
     int blood;
     float x;
     float y;
     float z;
+    int alive;
 };
 #pragma pop
 
 class NetManager{
 public:
-    std::vector<PlayerInfo> clientsInfo;
-    PlayerInfo serverInfo;
-    PlayerInfo clientInfo;
+    IrrlichtDevice* device;
+    
+    std::vector<PlayerInfo> playersInfo;
+    std::vector<IMeshSceneNode*> playersNode;
     PlayerInfo playerInfo;
+    int crtClients;
+    
+    IMeshSceneNode* tgtnode;
+    
     bool isServer;
     
     SLNet::RakPeerInterface *peer;
@@ -61,16 +73,17 @@ public:
     virtual void receiveData(SLNet::BitStream &bs_in) = 0;
     
     //virtual ~netManager();
-
+    void createPlayer(int index);
 };
 
 class Server : public NetManager{
 public:
-
-    int maxClient;
+    int receive_index; // this is updating while the device run
     
-    Server(){
-        
+    inline Server(){
+        crtClients = 1;
+        playerInfo.index = undefined_index;
+        playerInfo.blood = 10;
     }
     
     ~Server(){
@@ -95,6 +108,8 @@ public:
     unsigned short server_port;
     
     inline Client():server_port(SERVER_PORT){
+        crtClients = 0;
+        playerInfo.index = undefined_index;
     }
     
     ~Client(){
