@@ -28,7 +28,7 @@ scene::IAnimatedMeshSceneNode* WeaponNode;
 static int hitIndex = 10;
 scene::IMeshSceneNode* tgtnode[MAX_CLIENT];
 
-
+void DrawScshot(IrrlichtDevice* device, video::IVideoDriver* driver);
 void DrawCur(IrrlichtDevice* device,video::IVideoDriver* driver);
 void createtgt(scene::ISceneManager* smgr, video::IVideoDriver* driver, scene::IMetaTriangleSelector* selectors,std::vector<PlayerInfo> &clientsInfo);
 
@@ -241,7 +241,7 @@ int main(void)
             device->getGUIEnvironment()->drawAll();
         else{
             smgr->drawAll();
-            
+			DrawScshot(device, driver);
             camera->setFOV(defaultFOV / (f32)pow(2, scope));
             //sniper coverss
             if (scope) {
@@ -309,3 +309,10 @@ void DrawCur(IrrlichtDevice* device, video::IVideoDriver* driver) {
         driver->draw2DPolygon(core::vector2di(windowHeight / 2, windowWidth / 2), 1, video::SColor(255, 0, 255, 0), 8);
 }
 
+
+void DrawScshot(IrrlichtDevice* device, video::IVideoDriver* driver) {
+	video::ITexture* screenshot = driver->getTexture("009shot.jpg");
+	driver->getMaterial2D().TextureLayer[0].BilinearFilter = true;
+	driver->getMaterial2D().AntiAliasing = video::EAAM_FULL_BASIC;
+	driver->draw2DImage(screenshot, core::position2d<s32>(50, 50));
+}

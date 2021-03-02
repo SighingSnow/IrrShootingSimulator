@@ -1,13 +1,4 @@
-﻿  common.cpp
-d:\git\irrshootingsimulator\source\src\common.cpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-d:\git\irrshootingsimulator\source\src\common.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-d:\git\irrshootingsimulator\lib\irrlicht-1.8.4\include\keycodes.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-  eventManager.cpp
-d:\git\irrshootingsimulator\source\src\common.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-d:\git\irrshootingsimulator\lib\irrlicht-1.8.4\include\keycodes.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-d:\git\irrshootingsimulator\source\src\netmanager.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-d:\git\irrshootingsimulator\source\src\netmanager.h(41): warning C4068: 未知的杂注
-  main.cpp
+﻿  main.cpp
 d:\git\irrshootingsimulator\source\src\common.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
 d:\git\irrshootingsimulator\lib\irrlicht-1.8.4\include\keycodes.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
 d:\git\irrshootingsimulator\source\src\netmanager.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
@@ -60,14 +51,4 @@ d:\git\irrshootingsimulator\source\src\main.cpp(306): warning C4244: “参数�
           [
               T=irr::s32
           ]
-  netManager.cpp
-d:\git\irrshootingsimulator\source\src\netmanager.cpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-d:\git\irrshootingsimulator\source\src\netmanager.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-d:\git\irrshootingsimulator\source\src\common.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-d:\git\irrshootingsimulator\lib\irrlicht-1.8.4\include\keycodes.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-d:\git\irrshootingsimulator\source\src\netmanager.h(41): warning C4068: 未知的杂注
-d:\git\irrshootingsimulator\source\src\netmanager.cpp(12): warning C4018: “<”: 有符号/无符号不匹配
-d:\git\irrshootingsimulator\source\src\netmanager.cpp(149): warning C4018: “>”: 有符号/无符号不匹配
-d:\git\irrshootingsimulator\source\src\netmanager.cpp(268): warning C4018: “<”: 有符号/无符号不匹配
-  正在生成代码...
   IrrWindows.vcxproj -> D:\GIT\IrrShootingSimulator\VS\IrrWindows\Debug\IrrWindows.exe

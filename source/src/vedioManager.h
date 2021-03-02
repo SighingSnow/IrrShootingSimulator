@@ -3,7 +3,7 @@
 
 #include "stb_image.h"
 
-struct SceenShoot
+struct ScreenShoot
 {
     char* pictureData;
     
