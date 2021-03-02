@@ -6,6 +6,7 @@
 #include "common.h"
 #include "netManager.h"
 #include "include/ICameraSceneNode.h"
+#include<ctime>
 #include<cmath>
 #include<queue>
 

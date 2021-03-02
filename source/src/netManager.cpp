@@ -168,7 +168,10 @@ void Client::initNet()
     }
  
     printf("Enter server IP or hit enter for 127.0.0.1\n");
-    gets(str);
+	std::string tmp;
+	std::getline(std::cin, tmp);
+	strcpy(str,tmp.data());
+	//gets(str);
     if (str[0]==0){
         strcpy(str, "127.0.0.1");
     }

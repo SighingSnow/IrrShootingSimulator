@@ -11,10 +11,11 @@
 
 #include "common.h"
 #include <string.h>
-#include "net/RakPeerInterface.h"
-#include "net/MessageIdentifiers.h"
-#include "net/BitStream.h"
-#include "net/RakNetTypes.h"  // MessageID
+#include<string>
+#include "RakPeerInterface.h"
+#include "MessageIdentifiers.h"
+#include "BitStream.h"
+#include "RakNetTypes.h"  // MessageID
 #include "include/irrlicht.h"
 
 const int undefined_index = 100000;
