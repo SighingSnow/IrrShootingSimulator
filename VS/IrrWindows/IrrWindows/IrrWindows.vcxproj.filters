@@ -38,9 +38,6 @@
     <ClInclude Include="..\..\..\source\src\netManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\src\stb_image.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\src\vedioManager.h">
       <Filter>头文件</Filter>
     </ClInclude>

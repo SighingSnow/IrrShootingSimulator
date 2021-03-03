@@ -1,7 +1,7 @@
 #ifdef _MSC_VER
 #pragma comment(lib,"Irrlicht.lib")
 #endif
-
+#define STB_LIB
 #include "eventManager.h"
 
 enum
@@ -311,10 +311,11 @@ void DrawCur(IrrlichtDevice* device, video::IVideoDriver* driver) {
 
 
 void DrawScshot(IrrlichtDevice* device, video::IVideoDriver* driver) {
-	s32 nowTimer = device->getTimer()->getTime();
-	s32 deltaTime;
-	deltaTime=()
-	video::ITexture* screenshot = driver->getTexture("009shot.jpg");//test code
+	
+	video::ITexture* screenshot = driver->getTexture("temp.png");//screenshot
+	if(screenshot==0)
+	screenshot = driver->getTexture("009shot.jpg");//test code
+	
 	driver->getMaterial2D().TextureLayer[0].BilinearFilter = true;
 	driver->getMaterial2D().AntiAliasing = video::EAAM_FULL_BASIC;
 	driver->draw2DImage(screenshot, core::position2d<s32>(50, 50));

@@ -134,11 +134,14 @@ void  Server::sendScshot() {
 }
 
 void NetManager::recieveScshot(SLNet::BitStream &bs_in) {
-	ScreenShoot pic;
 	unsigned int pic_size;
+	int w, h, n;
 	bs_in.Read(pic_size);//read size;
-	bs_in.Read(pic.pictureData);//read picture data
-	scshot = pic;
+	bs_in.Read(w);
+	bs_in.Read(h);
+	bs_in.Read(n);
+	bs_in.Read(scshot.pictureData);//read picture data
+	stbi_write_png("temp.png", w, h, n, scshot.pictureData, w*n);
 }
 
 void Server::receiveData(SLNet::BitStream &bs_in)

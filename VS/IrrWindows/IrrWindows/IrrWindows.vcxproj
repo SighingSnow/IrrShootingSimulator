@@ -70,7 +70,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>D:\GIT\IrrShootingSimulator\lib\slikenet\Source;D:\GIT\IrrShootingSimulator\lib\irrlicht-1.8.4;$(IncludePath)</IncludePath>
+    <IncludePath>D:\GIT\IrrShootingSimulator\lib\stb;D:\GIT\IrrShootingSimulator\lib\slikenet\Source;D:\GIT\IrrShootingSimulator\lib\irrlicht-1.8.4;$(IncludePath)</IncludePath>
     <LibraryPath>D:\GIT\IrrShootingSimulator\lib\slikenet\Lib;D:\GIT\IrrShootingSimulator\lib\irrlicht-1.8.4\lib\Win32-visualstudio;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -137,7 +137,6 @@
     <ClInclude Include="..\..\..\source\src\common.h" />
     <ClInclude Include="..\..\..\source\src\eventManager.h" />
     <ClInclude Include="..\..\..\source\src\netManager.h" />
-    <ClInclude Include="..\..\..\source\src\stb_image.h" />
     <ClInclude Include="..\..\..\source\src\vedioManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

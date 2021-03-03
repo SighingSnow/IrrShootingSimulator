@@ -18,6 +18,7 @@
 #include "RakNetTypes.h"  // MessageID
 #include "include/irrlicht.h"
 #include"vedioManager.h"
+
 const int undefined_index = 100000;
 const int dead_index = -1;
 const int server_index = 0;
@@ -74,7 +75,7 @@ public:
     virtual void sendData() = 0;
     
 	/* send screenshot data to clients/server */
-	virtual void sendScshot() = 0;
+	//virtual void sendScshot() = 0;
 
     /* if it's the server, than receive data from the server. vice versa */
     virtual void receiveData(SLNet::BitStream &bs_in) = 0;

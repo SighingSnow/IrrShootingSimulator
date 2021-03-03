@@ -8,12 +8,13 @@
 #ifndef common_h
 #define common_h
 
+
 #include <iostream>
 #include <fstream>
 #include "include/irrlicht.h"
 #include <vector>
 #include <queue>
-
+#include<fstream>
 //#include "eventManager.h"
 
 const float moveSpeed = 5.0f;

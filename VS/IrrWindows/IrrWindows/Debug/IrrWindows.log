@@ -2,7 +2,7 @@
 d:\git\irrshootingsimulator\source\src\common.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
 d:\git\irrshootingsimulator\lib\irrlicht-1.8.4\include\keycodes.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
 d:\git\irrshootingsimulator\source\src\netmanager.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-d:\git\irrshootingsimulator\source\src\netmanager.h(41): warning C4068: 未知的杂注
+d:\git\irrshootingsimulator\source\src\netmanager.h(43): warning C4068: 未知的杂注
 d:\git\irrshootingsimulator\source\src\main.cpp(113): warning C4101: “animation”: 未引用的局部变量
 d:\git\irrshootingsimulator\source\src\main.cpp(278): warning C4018: “<”: 有符号/无符号不匹配
 d:\git\irrshootingsimulator\source\src\main.cpp(282): warning C4244: “参数”: 从“int”转换到“T”，可能丢失数据

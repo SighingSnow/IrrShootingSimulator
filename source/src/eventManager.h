@@ -4,6 +4,7 @@
 
 
 #include "common.h"
+#define STB_LIB
 #include "netManager.h"
 #include "include/ICameraSceneNode.h"
 #include<ctime>
