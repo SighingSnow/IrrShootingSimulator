@@ -20,7 +20,7 @@
 
 extern scene::IAnimatedMesh* bhmesh;
 extern scene::ITriangleSelector* selector;
-extern f32 reTimer, upTimer, jumpTimer;
+extern f32 reTimer, upTimer, jumpTimer,scTimer;
 extern const f32 reTime, upTime, jumpTime;
 extern core::vector3df upvec, jumpvec;
 extern int scope;

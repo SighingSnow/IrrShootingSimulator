@@ -19,7 +19,8 @@
 const float moveSpeed = 5.0f;
 const unsigned int windowHeight = 800;
 const unsigned int windowWidth = 600;
-const irr::f32 reTime = 200, upTime = 200, jumpTime = 800;
+const irr::f32 reTime = 200, upTime = 200, jumpTime = 800,scshotTime=20;
+
 
 ///const unsigned short SERVER_PORT = 60000;
 const unsigned int MAX_CLIENT = 10;

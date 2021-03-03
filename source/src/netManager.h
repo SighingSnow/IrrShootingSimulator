@@ -17,7 +17,7 @@
 #include "BitStream.h"
 #include "RakNetTypes.h"  // MessageID
 #include "include/irrlicht.h"
-
+#include"vedioManager.h"
 const int undefined_index = 100000;
 const int dead_index = -1;
 const int server_index = 0;
@@ -26,6 +26,7 @@ enum message_type
 {
     sendServerInfo = 101,
     sendClientInfo,
+	sendScreenshot
 };
 
 #pragma pack(push,1)
@@ -57,6 +58,8 @@ public:
     SLNet::Packet *packet;
     SLNet::SystemAddress server_address;
     
+	ScreenShoot scshot;
+
     NetManager(){
         
     }
@@ -70,8 +73,14 @@ public:
     /* if it's the server, than set data to the client. vice versa */
     virtual void sendData() = 0;
     
+	/* send screenshot data to clients/server */
+	virtual void sendScshot() = 0;
+
     /* if it's the server, than receive data from the server. vice versa */
     virtual void receiveData(SLNet::BitStream &bs_in) = 0;
+
+	/* recieve screenshot data */
+	void recieveScshot(SLNet::BitStream &bs_in);
     
     //virtual ~netManager();
     void createPlayer(int index);
@@ -96,6 +105,8 @@ public:
     void updateNet();
     
     void sendData();
+
+	void sendScshot();
     
     void receiveData(SLNet::BitStream &bs_in);
 
@@ -122,7 +133,9 @@ public:
     void updateNet();
     
     void sendData();
-    
+
+	void sendScshot();
+
     void receiveData(SLNet::BitStream &bs_in);
     
 private:

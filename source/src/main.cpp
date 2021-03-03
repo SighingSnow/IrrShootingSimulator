@@ -14,7 +14,7 @@ enum
 scene::IAnimatedMesh* tmpmesh;
 scene::IAnimatedMesh* bhmesh;
 scene::ITriangleSelector* selector;
-f32 reTimer, upTimer ,jumpTimer;
+f32 reTimer, upTimer ,jumpTimer,scTimer;
 int tgtnum;
 core::vector3df upvec,jumpvec;
 f32 frameDeltaTime;
@@ -311,7 +311,10 @@ void DrawCur(IrrlichtDevice* device, video::IVideoDriver* driver) {
 
 
 void DrawScshot(IrrlichtDevice* device, video::IVideoDriver* driver) {
-	video::ITexture* screenshot = driver->getTexture("009shot.jpg");
+	s32 nowTimer = device->getTimer()->getTime();
+	s32 deltaTime;
+	deltaTime=()
+	video::ITexture* screenshot = driver->getTexture("009shot.jpg");//test code
 	driver->getMaterial2D().TextureLayer[0].BilinearFilter = true;
 	driver->getMaterial2D().AntiAliasing = video::EAAM_FULL_BASIC;
 	driver->draw2DImage(screenshot, core::position2d<s32>(50, 50));

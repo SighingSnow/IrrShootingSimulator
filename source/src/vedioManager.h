@@ -5,7 +5,7 @@
 
 struct ScreenShoot
 {
-    char* pictureData;
+    unsigned char* pictureData;
     
     //TODO: read file from local and turn to bitStream
     void pictureToData();

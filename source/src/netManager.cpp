@@ -129,6 +129,18 @@ void Server::sendData()
     return;
 }
 
+void  Server::sendScshot() {
+
+}
+
+void NetManager::recieveScshot(SLNet::BitStream &bs_in) {
+	ScreenShoot pic;
+	unsigned int pic_size;
+	bs_in.Read(pic_size);//read size;
+	bs_in.Read(pic.pictureData);//read picture data
+	scshot = pic;
+}
+
 void Server::receiveData(SLNet::BitStream &bs_in)
 {
     PlayerInfo client_tmp;
