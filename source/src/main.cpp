@@ -28,6 +28,8 @@ scene::IAnimatedMeshSceneNode* WeaponNode;
 static int hitIndex = 10;
 scene::IMeshSceneNode* tgtnode[MAX_CLIENT];
 
+IImage* scrsht=NULL;
+
 void DrawScshot(IrrlichtDevice* device, video::IVideoDriver* driver);
 void DrawCur(IrrlichtDevice* device,video::IVideoDriver* driver);
 void createtgt(scene::ISceneManager* smgr, video::IVideoDriver* driver, scene::IMetaTriangleSelector* selectors,std::vector<PlayerInfo> &clientsInfo);
@@ -241,6 +243,8 @@ int main(void)
             device->getGUIEnvironment()->drawAll();
         else{
             smgr->drawAll();
+            scrsht = driver->createScreenShot();
+            driver->writeImageToFile(scrsht, "screen/scr.png");
 			DrawScshot(device, driver);
             camera->setFOV(defaultFOV / (f32)pow(2, scope));
             //sniper coverss

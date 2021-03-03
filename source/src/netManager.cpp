@@ -7,6 +7,8 @@
 
 #include "netManager.h"
 
+extern IImage* scrsht;
+
 void NetManager::createPlayer(int index)
 {
     if(index < playersNode.size() && index != 0){
@@ -130,7 +132,22 @@ void Server::sendData()
 }
 
 void  Server::sendScshot() {
-
+    
+    if (scrsht) {
+        int n = 1;
+        SLNet::BitStream stream;
+        int width, height, comp;
+        unsigned char* data = stbi_load("screen/scr.png", &width, &height, &comp, 0);
+        stream.Write((SLNet::MessageID)ID_USER_PACKET_ENUM);
+        stream.Write(sendScreenshot);
+        stream.Write(scrsht->getImageDataSizeInBytes());
+        stream.Write(width);
+        stream.Write(height);
+        stream.Write(comp);
+        stream.Write(data);
+        peer->Send(&stream, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
+        return;
+    }
 }
 
 void NetManager::recieveScshot(SLNet::BitStream &bs_in) {
